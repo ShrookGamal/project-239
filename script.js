@@ -90,17 +90,13 @@ const animateNumbers = () => {
 };
 
 const revealOnScroll = () => {
-    const elements = document.querySelectorAll('.animate-on-scroll, .about-text-side > *, .feature-item, .image-container');
+    const elements = document.querySelectorAll('.animate-on-scroll, .about-text-side > *, .feature-item, .image-container, .service-card');
     elements.forEach(el => {
         const elementTop = el.getBoundingClientRect().top;
-        if (elementTop < window.innerHeight - 100) {
+        if (elementTop < window.innerHeight - 50) {
             el.classList.add('active-anim');
         }
     });
-};
-
-const observerOptions = {
-    threshold: 0.5
 };
 
 let started = false;
@@ -111,7 +107,7 @@ const statsObserver = new IntersectionObserver((entries) => {
             started = true;
         }
     });
-}, observerOptions);
+}, { threshold: 0.15 });
 
 const aboutSection = document.querySelector('.about-section');
 if(aboutSection) statsObserver.observe(aboutSection);
@@ -121,10 +117,10 @@ window.addEventListener('load', revealOnScroll);
 
 const styleInjection = document.createElement('style');
 styleInjection.innerHTML = `
-    .about-text-side > *, .feature-item, .animate-on-scroll, .image-container {
+    .about-text-side > *, .feature-item, .animate-on-scroll, .image-container, .service-card {
         opacity: 0;
-        transform: translateY(40px);
-        transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: translateY(30px);
+        transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .active-anim {
         opacity: 1;
@@ -132,21 +128,11 @@ styleInjection.innerHTML = `
     }
     .feature-item:nth-child(2) { transition-delay: 0.2s; }
     .feature-item:nth-child(3) { transition-delay: 0.4s; }
+    .service-card:nth-child(2) { transition-delay: 0.1s; }
+    .service-card:nth-child(3) { transition-delay: 0.2s; }
 `;
 document.head.appendChild(styleInjection);
-// أضيفي هذا الكود داخل ملف script.js ليتفاعل مع كروت الخدمات
-const serviceCards = document.querySelectorAll('.service-card');
-const observerService = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-            setTimeout(() => {
-                entry.target.classList.add('active-anim');
-            }, index * 100); // تأخير بسيط بين كل كارد وآخر
-        }
-    });
-}, { threshold: 0.2 });
 
-serviceCards.forEach(card => observerService.observe(card));
 const whyObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -158,27 +144,23 @@ const whyObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.feat-card').forEach(card => {
     card.style.opacity = "0";
-    card.style.transform = "translateY(40px) scale(0.9)";
+    card.style.transform = "translateY(30px) scale(0.9)";
     whyObserver.observe(card);
 });
-// كود إرسال بيانات الفورم للواتساب
-document.getElementById('whatsappForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // جلب القيم من المدخلات
-    const name = document.getElementById('name').value;
-    const service = document.getElementById('service').value;
-    const message = document.getElementById('message').value;
-    
-    // تجهيز نص الرسالة
-    const whatsappNumber = "966505986457";
-    const text = `السلام عليكم مؤسسة النجم للمقاولات%0A%0A*طلب خدمة جديد*%0A------------------%0A*الاسم:* ${name}%0A*الخدمة:* ${service}%0A*التفاصيل:* ${message}`;
-    
-    // فتح رابط واتساب
-    window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank');
-});
 
-// إضافة انميشن ظهور الكروت
+const whatsappForm = document.getElementById('whatsappForm');
+if(whatsappForm) {
+    whatsappForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const service = document.getElementById('service').value;
+        const message = document.getElementById('message').value;
+        const whatsappNumber = "966505986457";
+        const text = `السلام عليكم مؤسسة النجم للمقاولات%0A%0A*طلب خدمة جديد*%0A------------------%0A*الاسم:* ${name}%0A*الخدمة:* ${service}%0A*التفاصيل:* ${message}`;
+        window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank');
+    });
+}
+
 const contactObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -186,14 +168,14 @@ const contactObserver = new IntersectionObserver((entries) => {
             entry.target.style.transform = "translateX(0)";
         }
     });
-}, { threshold: 0.2 });
+}, { threshold: 0.1 });
 
 document.querySelectorAll('.contact-info-card, .contact-form-card').forEach(card => {
     card.style.opacity = "0";
     if(card.classList.contains('animate-slide-right')) {
-        card.style.transform = "translateX(50px)";
+        card.style.transform = "translateX(40px)";
     } else {
-        card.style.transform = "translateX(-50px)";
+        card.style.transform = "translateX(-40px)";
     }
     contactObserver.observe(card);
 });
