@@ -156,7 +156,7 @@ if(whatsappForm) {
         const service = document.getElementById('service').value;
         const message = document.getElementById('message').value;
         const whatsappNumber = "966505986457";
-        const text = `السلام عليكم مؤسسة النجم للمقاولات%0A%0A*طلب خدمة جديد*%0A------------------%0A*الاسم:* ${name}%0A*الخدمة:* ${service}%0A*التفاصيل:* ${message}`;
+        const text = `السلام عليكم مؤسسة أبو إياد للمقاولات%0A%0A*طلب خدمة جديد*%0A------------------%0A*الاسم:* ${name}%0A*الخدمة:* ${service}%0A*التفاصيل:* ${message}`;
         window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank');
     });
 }
